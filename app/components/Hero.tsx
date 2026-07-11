@@ -1,41 +1,55 @@
+import { CalendarDays, Phone } from "lucide-react";
+
 export default function Hero() {
   return (
     <section
-      className="relative flex min-h-screen items-center justify-center bg-cover bg-center"
+      id="home"
+      className="relative flex min-h-screen items-center overflow-hidden bg-slate-950 bg-cover bg-center"
       style={{
         backgroundImage: "url('/images/hero.jpg')",
       }}
     >
-      {/* Tamni overlay */}
-      <div className="absolute inset-0 bg-black/70"></div>
+      <div className="absolute inset-0 bg-black/55" />
 
-      {/* Sadržaj */}
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-white">
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/70 to-transparent" />
 
-        <h1 className="text-5xl font-extrabold leading-tight md:text-7xl">
-          Vaše odredište.
-          <br />
-          Naša odgovornost.
-        </h1>
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 pt-36 lg:px-8">
+        <div className="max-w-3xl">
+          <span className="text-sm font-semibold uppercase tracking-[0.4em] text-yellow-400">
+            TAXI IGGY · ZAGREB
+          </span>
 
-        <p className="mx-auto mt-8 max-w-2xl text-lg text-slate-300 md:text-xl">
-          Premium prijevoz za poslovne korisnike, zračnu luku,
-          posebne događaje i sve prilike kada želite sigurnu,
-          točnu i ugodnu vožnju.
-        </p>
+          <h1 className="mt-6 text-5xl font-bold leading-[1.05] text-white md:text-7xl lg:text-8xl">
+            Pouzdan prijevoz
+            <span className="block text-yellow-400">za svaku priliku.</span>
+          </h1>
 
-        <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+          <div className="mt-8 h-px w-20 bg-yellow-400" />
 
-          <button className="rounded-xl bg-yellow-400 px-8 py-4 font-semibold text-slate-900 transition hover:scale-105 hover:bg-yellow-300">
-            Rezerviraj vožnju
-          </button>
+          <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-200 md:text-xl">
+            Pouzdan i profesionalan prijevoz u Zagrebu i okolici.
+            Aerodromski transferi, poslovne vožnje, vjenčanja i prijevoz
+            po dogovoru.
+          </p>
 
-          <button className="rounded-xl border border-white/30 bg-white/10 px-8 py-4 font-semibold backdrop-blur transition hover:bg-white/20">
-            Saznaj više
-          </button>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <a
+              href="#contact"
+              className="flex items-center justify-center gap-3 rounded-xl bg-yellow-400 px-7 py-4 font-bold text-slate-950 transition duration-300 hover:-translate-y-1 hover:bg-yellow-300 hover:shadow-2xl hover:shadow-yellow-400/20"
+            >
+              <CalendarDays size={21} />
+              Rezerviraj vožnju
+            </a>
 
+            <a
+              href="tel:+385915930090"
+              className="flex items-center justify-center gap-3 rounded-xl border border-white/30 bg-black/30 px-7 py-4 font-bold text-white backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-yellow-400 hover:text-yellow-400"
+            >
+              <Phone size={21} />
+              Nazovi odmah
+            </a>
+          </div>
         </div>
-
       </div>
     </section>
   );
