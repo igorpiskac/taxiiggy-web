@@ -1,5 +1,5 @@
 import {
-  Camera,
+  
   Mail,
   MapPin,
   Phone,
@@ -16,8 +16,8 @@ const navigation = [
 export default function Footer() {
   return (
     <footer className="border-t border-yellow-400/20 bg-slate-950 text-white">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto max-w-7xl px-6 py-12 pb-20 lg:px-8 lg:py-16">
+        <div className="grid gap-8 md:gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-12 items-center justify-center rounded-t-xl rounded-b-2xl border-2 border-yellow-400 text-xl font-bold">
@@ -36,9 +36,9 @@ export default function Footer() {
             </div>
 
             <p className="mt-7 max-w-md leading-7 text-slate-400">
-              Pouzdan prijevoz za svaku priliku. Zagreb i okolica,
-              aerodromski transferi, vjenčanja i vožnje po dogovoru.
-            </p>
+  Pouzdan prijevoz uz osobni pristup, točan dogovor i ugodnu vožnju.
+  Kada želite znati tko dolazi po vas.
+</p>
 
             <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-yellow-400">
               Vaše odredište. Naša odgovornost.
@@ -86,14 +86,7 @@ export default function Footer() {
                 Zagreb i okolica
               </div>
 
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="flex w-fit items-center gap-3 text-slate-400 transition hover:text-yellow-400"
-              >
-                <Camera size={19} className="text-yellow-400" />
-                Instagram
-              </a>
+              
             </div>
           </div>
         </div>
@@ -103,7 +96,7 @@ export default function Footer() {
             © {new Date().getFullYear()} TAXI IGGY. Sva prava pridržana.
           </p>
 
-          <p>Pouzdan prijevoz za svaku priliku.</p>
+          <p>Zagreb • Transferi • Vjenčanja • Vožnje po dogovoru</p>
         </div>
       </div>
     </footer>

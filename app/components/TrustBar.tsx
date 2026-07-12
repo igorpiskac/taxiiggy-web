@@ -1,4 +1,9 @@
-import { CarFront, Clock3, ShieldCheck, UserRound } from "lucide-react";
+import {
+  CarFront,
+  Clock3,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 
 const items = [
   {
@@ -9,7 +14,7 @@ const items = [
   {
     icon: ShieldCheck,
     title: "Pouzdanost",
-    text: "Vaše povjerenje nam je od jedne vožnje.",
+    text: "Dogovor vrijedi od prve do posljednje minute.",
   },
   {
     icon: CarFront,
@@ -33,10 +38,10 @@ export default function TrustBar() {
           return (
             <div
               key={item.title}
-              className="group flex gap-5 border-b border-white/10 px-6 py-8 transition hover:bg-white/[0.03] md:border-r xl:border-b-0"
+              className="group flex items-center gap-4 border-b border-white/10 px-6 py-6 transition duration-300 hover:bg-white/[0.03] md:border-r xl:border-b-0"
             >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-yellow-400/50 text-yellow-400 transition group-hover:bg-yellow-400 group-hover:text-slate-950">
-                <Icon size={27} strokeWidth={1.7} />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-yellow-400/50 text-yellow-400 transition duration-300 group-hover:bg-yellow-400 group-hover:text-slate-950">
+                <Icon size={23} strokeWidth={1.7} />
               </div>
 
               <div>
@@ -44,7 +49,7 @@ export default function TrustBar() {
                   {item.title}
                 </h2>
 
-                <p className="mt-2 text-sm leading-6 text-slate-400">
+                <p className="mt-1.5 text-sm leading-5 text-slate-400">
                   {item.text}
                 </p>
               </div>

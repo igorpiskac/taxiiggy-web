@@ -1,11 +1,4 @@
-import { ArrowRight, Check, HeartHandshake } from "lucide-react";
-
-const values = [
-  "Pouzdan dogovor i dolazak na vrijeme",
-  "Čisto, uredno i ugodno vozilo",
-  "Profesionalan, ali ljudski pristup",
-  "Vožnja prilagođena vašim potrebama",
-];
+import { HeartHandshake } from "lucide-react";
 
 export default function About() {
   return (
@@ -20,8 +13,8 @@ export default function About() {
           <div className="relative overflow-hidden rounded-3xl border border-yellow-400/30">
             <img
               src="/images/contact-bg.png"
-              alt="TAXI IGGY premium prijevoz"
-              className="min-h-[560px] w-full object-cover"
+              alt="TAXI IGGY prijevoz"
+              className="min-h-[560px] w-full object-cover object-[center_75%] lg:object-center"
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
@@ -56,40 +49,21 @@ export default function About() {
           <div className="mt-7 h-px w-16 bg-yellow-400" />
 
           <p className="mt-8 text-lg leading-8 text-slate-300">
-            TAXI IGGY nastao je iz jednostavne ideje: ponuditi
-            prijevoz kakav bismo i sami željeli koristiti.
+  TAXI IGGY nastao je iz jednostavne želje da ljudima ponudimo
+  vožnju na koju se mogu osloniti.
+</p>
+
+          <p className="mt-5 text-lg leading-8 text-slate-400">
+            Bez neizvjesnosti hoće li vozač doći. Bez nepotrebnih
+            komplikacija. Dogovorimo vožnju, dolazimo prema dogovoru
+            i brinemo da do svog odredišta stignete sigurno i ugodno.
           </p>
 
           <p className="mt-5 text-lg leading-8 text-slate-400">
-            Bez nepotrebnih komplikacija. Bez neizvjesnosti.
-            Dogovorimo vožnju, dolazimo prema dogovoru i brinemo da
-            do svog odredišta stignete sigurno i ugodno.
+            Bilo da putujete prema zračnoj luci, vraćate se sa svadbe
+            ili jednostavno trebate pouzdan prijevoz — želimo da znate
+            tko dolazi po vas.
           </p>
-
-          <div className="mt-9 space-y-4">
-            {values.map((value) => (
-              <div
-                key={value}
-                className="flex items-center gap-4"
-              >
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-slate-950">
-                  <Check size={17} strokeWidth={3} />
-                </div>
-
-                <span className="text-slate-200">
-                  {value}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <a
-            href="#contact"
-            className="mt-10 inline-flex items-center gap-3 rounded-xl border border-yellow-400 px-7 py-4 font-bold text-yellow-400 transition duration-300 hover:bg-yellow-400 hover:text-slate-950"
-          >
-            Upoznajte TAXI IGGY
-            <ArrowRight size={20} />
-          </a>
         </div>
       </div>
     </section>

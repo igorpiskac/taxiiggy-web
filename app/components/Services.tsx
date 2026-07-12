@@ -33,9 +33,9 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="bg-slate-950 py-24 text-white lg:py-32"
+      className="bg-slate-950 pb-10 pt-16 text-white lg:pb-12 lg:pt-20"
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto -mt-4 max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <span className="text-sm font-semibold uppercase tracking-[0.4em] text-yellow-400">
             Naše usluge
@@ -69,7 +69,13 @@ export default function Services() {
                   }}
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/10" />
+                <div
+  className="absolute inset-0"
+  style={{
+    background:
+      "linear-gradient(0deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.72) 35%, rgba(0,0,0,0.18) 68%, rgba(0,0,0,0) 100%)",
+  }}
+/>
 
                 <div className="relative z-10 flex min-h-[570px] flex-col justify-end p-8">
                   <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-yellow-400 bg-black/60 text-yellow-400 backdrop-blur">
@@ -114,7 +120,13 @@ export default function Services() {
             }}
           />
 
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/20" />
+          <div
+  className="absolute inset-0"
+  style={{
+    background:
+      "linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.62) 35%, rgba(0,0,0,0.16) 62%, rgba(0,0,0,0) 82%)",
+  }}
+/>
 
           <div className="relative z-10 max-w-3xl px-8 py-16 md:px-14 lg:py-20">
             <h3 className="text-4xl font-bold leading-tight md:text-5xl">

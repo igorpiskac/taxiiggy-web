@@ -101,7 +101,7 @@ export default function Header() {
               key={item.label}
               href={item.href}
               onClick={() => setIsOpen(false)}
-              className="border-b border-white/10 py-4 text-base font-medium text-slate-200 transition hover:pl-2 hover:text-yellow-400"
+              className="border-b border-white/10 py-3 text-base font-medium text-slate-200 transition hover:pl-2 hover:text-yellow-400"
             >
               {item.label}
             </a>

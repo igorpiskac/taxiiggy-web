@@ -22,6 +22,11 @@ html {
   scroll-behavior: smooth;
 }
 
+section[id] {
+  scroll-margin-top: 6rem;
+}
+
+
 body {
   background: var(--background);
   color: var(--text);
@@ -33,9 +38,7 @@ body {
    GLOBAL STYLES
 =========================== */
 
-section {
-  padding: 6rem 0;
-}
+
 
 .container {
   max-width: 1280px;

@@ -19,7 +19,7 @@ export default function Reviews() {
   return (
     <section
       id="reviews"
-      className="relative overflow-hidden bg-slate-950 py-24 text-white lg:py-32"
+      className="relative overflow-hidden bg-slate-950 py-12 text-white md:py-16 lg:py-32"
     >
       <div className="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full bg-yellow-400/5 blur-3xl" />
 
@@ -29,7 +29,7 @@ export default function Reviews() {
             Iskustva putnika
           </span>
 
-          <h2 className="mt-5 text-4xl font-bold md:text-5xl lg:text-6xl">
+          <h2 className="mt-5 text-3xl font-bold md:text-5xl lg:text-6xl">
             Vaše povjerenje nam je
             <span className="block text-yellow-400">najbolja preporuka.</span>
           </h2>
@@ -37,18 +37,20 @@ export default function Reviews() {
           <div className="mx-auto mt-6 h-px w-16 bg-yellow-400" />
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-400">
-            Najviše nam znači kada se putnici ponovno jave i ponovno
-            odaberu TAXI IGGY.
-          </p>
+  Najviše nam znači kada nam se putnici ponovno jave i za svoju
+  sljedeću vožnju odaberu TAXI IGGY.
+</p>
         </div>
 
         <div className="mt-16 grid gap-7 lg:grid-cols-3">
           {reviews.map((review) => (
             <article
-              key={review.name}
-              className="relative rounded-3xl border border-white/10 bg-slate-900/70 p-8 transition duration-300 hover:-translate-y-2 hover:border-yellow-400/50"
-            >
-              <Quote
+  key={review.name}
+  className="group relative overflow-hidden rounded-3xl border border-white/10 bg-slate-900/70 p-6 md:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/10"
+>
+  <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-yellow-400/0 blur-3xl transition duration-500 group-hover:bg-yellow-400/10" />
+
+  <Quote
                 size={42}
                 strokeWidth={1.4}
                 className="text-yellow-400"

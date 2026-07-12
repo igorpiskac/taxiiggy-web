@@ -10,16 +10,22 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-slate-900 py-24 text-white lg:py-32"
+      className="relative overflow-hidden bg-slate-900 py-10 text-white lg:py-32"
     >
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-20"
+        className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: "url('/images/contact-bg.png')",
         }}
       />
 
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/95 to-slate-950/70" />
+      <div
+  className="absolute inset-0"
+  style={{
+    background:
+      "linear-gradient(90deg, rgba(2,6,23,0.92) 0%, rgba(2,6,23,0.82) 42%, rgba(2,6,23,0.48) 70%, rgba(2,6,23,0.22) 100%)",
+  }}
+/>
 
       <div className="relative mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-2 lg:px-8">
         <div>
@@ -87,7 +93,7 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-yellow-400/30 bg-slate-950/80 p-8 shadow-2xl backdrop-blur-xl md:p-10">
+        <div className="self-center rounded-3xl border border-yellow-400/30 bg-slate-950/80 p-8 shadow-2xl backdrop-blur-xl md:p-10">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-yellow-400 text-slate-950">
             <CalendarDays size={30} />
           </div>
@@ -109,7 +115,7 @@ export default function Contact() {
           </a>
 
           <a
-            href="https://wa.me/385915930090"
+            href="https://wa.me/385915930090?text=Pozdrav%2C%20%C5%BEelio%2F%C5%BEeljela%20bih%20rezervirati%20vo%C5%BEnju.%0A%0ADatum%20i%20vrijeme%3A%20%0APolazi%C5%A1te%3A%20%0AOdredi%C5%A1te%3A%20%0ABroj%20putnika%3A%20"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 flex items-center justify-center gap-3 rounded-xl border border-yellow-400/50 px-6 py-4 font-bold text-yellow-400 transition duration-300 hover:bg-yellow-400 hover:text-slate-950"

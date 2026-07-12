@@ -19,13 +19,16 @@ const items = [
   {
     icon: Car,
     title: "Premium usluga",
-    text: "Čisto vozilo, ugodna vožnja i profesionalalan pristup.",
+    text: "Čisto vozilo, ugodna vožnja i profesionalan pristup.",
   },
 ];
 
 export default function WhyUs() {
   return (
-    <section className="bg-slate-950 py-24">
+    <section
+  id="why-us"
+  className="bg-slate-950 pb-20 pt-10 lg:pb-24 lg:pt-12"
+>
       <div className="mx-auto max-w-7xl px-6">
 
         <div className="text-center">
@@ -38,13 +41,13 @@ export default function WhyUs() {
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
-            Svaka vožnja temelji se na točnosti, profesionalnosti i
-            vrhunskoj usluzi. Naš cilj nije samo prijevoz, nego ugodno
-            iskustvo od polaska do dolaska.
-          </p>
+  Svaka vožnja temelji se na točnosti, profesionalnosti i
+  pouzdanoj usluzi. Naš cilj nije samo prijevoz, nego ugodno
+  iskustvo od polaska do dolaska.
+</p>
         </div>
 
-        <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-14 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
 
           {items.map((item) => {
             const Icon = item.icon;
