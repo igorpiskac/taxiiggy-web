@@ -3,6 +3,10 @@
 import { useState } from "react";
 export default function ReservationForm() {
     const [rideType, setRideType] = useState("");
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
+    const [pickup, setPickup] = useState("");
   return (
     <section
       id="reservation"
@@ -41,22 +45,28 @@ export default function ReservationForm() {
 
               <div className="mt-6 grid gap-5 md:grid-cols-2">
                 <input
-                  type="text"
-                  placeholder="Ime i prezime"
-                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
-                />
+  type="text"
+  placeholder="Ime i prezime"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
+/>
 
                 <input
-                  type="tel"
-                  placeholder="Broj telefona"
-                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
-                />
+  type="tel"
+  placeholder="Broj telefona"
+  value={phone}
+  onChange={(e) => setPhone(e.target.value)}
+  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
+/>
 
                 <input
-                  type="email"
-                  placeholder="E-mail (nije obavezno)"
-                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
-                />
+  type="email"
+  placeholder="E-mail (nije obavezno)"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
+/>
               </div>
             </div>
 
@@ -69,10 +79,12 @@ export default function ReservationForm() {
 
               <div className="mt-6 grid gap-5 md:grid-cols-2">
                 <input
-                  type="text"
-                  placeholder="Polazište"
-                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
-                />
+  type="text"
+  placeholder="Polazište"
+  value={pickup}
+  onChange={(e) => setPickup(e.target.value)}
+  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
+/>
 
                 <input
                   type="text"
@@ -122,41 +134,62 @@ export default function ReservationForm() {
     </p>
   </div>
 
-  <div className="cursor-pointer rounded-2xl border border-slate-700 bg-slate-950/60 p-6 transition duration-300 hover:border-yellow-400 hover:bg-slate-900">
-    <div className="text-3xl">✈️</div>
+  <div
+  onClick={() => setRideType("aerodrom")}
+  className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
+    rideType === "aerodrom"
+      ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
+      : "border border-slate-700 bg-slate-950/60 hover:border-yellow-400 hover:bg-slate-900"
+  }`}
+>
+  <div className="text-3xl">✈️</div>
 
-    <h4 className="mt-4 text-lg font-bold text-white">
-      Aerodromski transfer
-    </h4>
+  <h4 className="mt-4 text-lg font-bold text-white">
+    Aerodromski transfer
+  </h4>
 
-    <p className="mt-2 text-sm leading-6 text-slate-400">
-      Dolazak ili odlazak uz dogovoreno vrijeme.
-    </p>
-  </div>
+  <p className="mt-2 text-sm leading-6 text-slate-400">
+    Dolazak ili odlazak uz dogovoreno vrijeme.
+  </p>
+</div>
 
-  <div className="cursor-pointer rounded-2xl border border-slate-700 bg-slate-950/60 p-6 transition duration-300 hover:border-yellow-400 hover:bg-slate-900">
-    <div className="text-3xl">💼</div>
+  <div
+  onClick={() => setRideType("poslovna")}
+  className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
+    rideType === "poslovna"
+      ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
+      : "border border-slate-700 bg-slate-950/60 hover:border-yellow-400 hover:bg-slate-900"
+  }`}
+>
+  <div className="text-3xl">💼</div>
 
-    <h4 className="mt-4 text-lg font-bold text-white">
-      Poslovna vožnja
-    </h4>
+  <h4 className="mt-4 text-lg font-bold text-white">
+    Poslovna vožnja
+  </h4>
 
-    <p className="mt-2 text-sm leading-6 text-slate-400">
-      Pouzdan prijevoz za poslovne sastanke i događanja.
-    </p>
-  </div>
+  <p className="mt-2 text-sm leading-6 text-slate-400">
+    Pouzdan prijevoz za poslovne sastanke i događanja.
+  </p>
+</div>
 
-  <div className="cursor-pointer rounded-2xl border border-slate-700 bg-slate-950/60 p-6 transition duration-300 hover:border-yellow-400 hover:bg-slate-900">
-    <div className="text-3xl">💍</div>
+  <div
+  onClick={() => setRideType("vjencanje")}
+  className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
+    rideType === "vjencanje"
+      ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
+      : "border border-slate-700 bg-slate-950/60 hover:border-yellow-400 hover:bg-slate-900"
+  }`}
+>
+  <div className="text-3xl">💍</div>
 
-    <h4 className="mt-4 text-lg font-bold text-white">
-      Vjenčanje
-    </h4>
+  <h4 className="mt-4 text-lg font-bold text-white">
+    Vjenčanje
+  </h4>
 
-    <p className="mt-2 text-sm leading-6 text-slate-400">
-      Prijevoz mladenaca, uzvanika i posebnih događanja.
-    </p>
-  </div>
+  <p className="mt-2 text-sm leading-6 text-slate-400">
+    Prijevoz mladenaca, uzvanika i posebnih događanja.
+  </p>
+</div>
 
 </div>
 </div>
@@ -175,6 +208,29 @@ export default function ReservationForm() {
 </p>
   </div>
 )}
+{/* BLOK 4 */}
+
+<div>
+  <h3 className="text-xl font-bold text-white">
+    📝 Dodatne informacije
+  </h3>
+
+  <p className="mt-2 text-slate-400">
+    Imate li posebnu napomenu ili zahtjev vezan uz vožnju?
+  </p>
+
+  <textarea
+    rows={5}
+    placeholder="Npr. dječja sjedalica, više stajanja, broj leta..."
+    className="mt-6 w-full resize-none rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
+  />
+</div>
+<button
+  type="button"
+  className="w-full rounded-xl bg-yellow-400 px-6 py-5 text-lg font-bold text-slate-950 transition duration-300 hover:-translate-y-1 hover:bg-yellow-300 hover:shadow-xl hover:shadow-yellow-400/20"
+>
+  Pošaljite zahtjev za rezervaciju
+</button>
 
 </div>
 </div>
