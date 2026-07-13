@@ -7,6 +7,10 @@ export default function ReservationForm() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [pickup, setPickup] = useState("");
+    const [destination, setDestination] = useState("");
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
+    const [note, setNote] = useState("");
   return (
     <section
       id="reservation"
@@ -87,20 +91,26 @@ export default function ReservationForm() {
 />
 
                 <input
-                  type="text"
-                  placeholder="Odredište"
-                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
-                />
+  type="text"
+  placeholder="Odredište"
+  value={destination}
+  onChange={(e) => setDestination(e.target.value)}
+  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
+/>
 
                 <input
-                  type="date"
-                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
-                />
+  type="date"
+  value={date}
+  onChange={(e) => setDate(e.target.value)}
+  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
+/>
 
                 <input
-                  type="time"
-                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
-                />
+  type="time"
+  value={time}
+  onChange={(e) => setTime(e.target.value)}
+  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
+/>
               </div>
             </div>
 {/* BLOK 3 */}
@@ -220,10 +230,12 @@ export default function ReservationForm() {
   </p>
 
   <textarea
-    rows={5}
-    placeholder="Npr. dječja sjedalica, više stajanja, broj leta..."
-    className="mt-6 w-full resize-none rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
-  />
+  rows={5}
+  placeholder="Npr. dječja sjedalica, više stajanja, broj leta..."
+  value={note}
+  onChange={(e) => setNote(e.target.value)}
+  className="mt-6 w-full resize-none rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
+/>
 </div>
 <button
   type="button"
