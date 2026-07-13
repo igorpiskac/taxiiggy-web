@@ -11,6 +11,39 @@ export default function ReservationForm() {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [note, setNote] = useState("");
+    const handleSubmit = () => {
+      const rideTypeLabel =
+  rideType === "privatna"
+    ? "Privatna vožnja"
+    : rideType === "aerodrom"
+    ? "Aerodromski transfer"
+    : rideType === "poslovna"
+    ? "Poslovna vožnja"
+    : rideType === "vjencanje"
+    ? "Vjenčanje"
+    : "Nije odabrano";
+      const message = `
+NOVI ZAHTJEV ZA REZERVACIJU
+
+Ime i prezime: ${name}
+Telefon: ${phone}
+E-mail: ${email || "Nije navedeno"}
+
+Polazište: ${pickup}
+Odredište: ${destination}
+
+Datum: ${date}
+Vrijeme: ${time}
+
+Vrsta vožnje: ${rideTypeLabel}
+
+Napomena: ${note || "Nema napomene"}
+`;
+  const whatsappUrl = `https://wa.me/385915930090?text=${encodeURIComponent(message)}`;
+
+window.open(whatsappUrl, "_blank");
+    
+};
   return (
     <section
       id="reservation"
@@ -239,6 +272,7 @@ export default function ReservationForm() {
 </div>
 <button
   type="button"
+  onClick={handleSubmit}
   className="w-full rounded-xl bg-yellow-400 px-6 py-5 text-lg font-bold text-slate-950 transition duration-300 hover:-translate-y-1 hover:bg-yellow-300 hover:shadow-xl hover:shadow-yellow-400/20"
 >
   Pošaljite zahtjev za rezervaciju
