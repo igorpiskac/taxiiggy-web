@@ -68,7 +68,7 @@ export default function Header() {
           </a>
 
           <a
-            href="#contact"
+            href="#reservation"
             className="flex items-center gap-2 rounded-xl bg-yellow-400 px-5 py-3 text-sm font-bold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-xl hover:shadow-yellow-400/20"
           >
             <CalendarDays size={18} />

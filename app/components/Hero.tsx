@@ -42,7 +42,7 @@ export default function Hero() {
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <a
-              href="#contact"
+              href="#reservation"
               className="flex items-center justify-center gap-2 rounded-lg bg-yellow-400 px-5 sm:px-8 py-4 text-sm sm:text-base font-bold uppercase tracking-wide text-slate-950 transition duration-300 hover:-translate-y-1 hover:bg-yellow-300 hover:shadow-2xl hover:shadow-yellow-400/20"
             >
               <CalendarDays size={21} />
