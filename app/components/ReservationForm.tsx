@@ -12,6 +12,40 @@ export default function ReservationForm() {
     const [time, setTime] = useState("");
     const [note, setNote] = useState("");
     const handleSubmit = () => {
+      if (!rideType) {
+  alert("Molimo odaberite vrstu vožnje.");
+  return;
+}
+
+if (!name.trim()) {
+  alert("Molimo unesite ime i prezime.");
+  return;
+}
+
+if (!phone.trim()) {
+  alert("Molimo unesite broj telefona.");
+  return;
+}
+
+if (!pickup.trim()) {
+  alert("Molimo unesite polazište.");
+  return;
+}
+
+if (!destination.trim()) {
+  alert("Molimo unesite odredište.");
+  return;
+}
+
+if (!date) {
+  alert("Molimo odaberite datum.");
+  return;
+}
+
+if (!time) {
+  alert("Molimo odaberite vrijeme.");
+  return;
+}
       const rideTypeLabel =
   rideType === "privatna"
     ? "Privatna vožnja"
@@ -42,6 +76,15 @@ Napomena: ${note || "Nema napomene"}
   const whatsappUrl = `https://wa.me/385915930090?text=${encodeURIComponent(message)}`;
 
 window.open(whatsappUrl, "_blank");
+setRideType("");
+setName("");
+setPhone("");
+setEmail("");
+setPickup("");
+setDestination("");
+setDate("");
+setTime("");
+setNote("");
     
 };
   return (
