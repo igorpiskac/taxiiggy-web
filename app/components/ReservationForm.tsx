@@ -11,41 +11,49 @@ export default function ReservationForm() {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [note, setNote] = useState("");
+    const [error, setError] = useState("");
     const handleSubmit = () => {
       if (!rideType) {
-  alert("Molimo odaberite vrstu vožnje.");
+  setError("Molimo odaberite vrstu vožnje.");
   return;
 }
 
 if (!name.trim()) {
-  alert("Molimo unesite ime i prezime.");
+  setError("Molimo unesite ime i prezime.");
   return;
 }
 
 if (!phone.trim()) {
-  alert("Molimo unesite broj telefona.");
+  setError("Molimo unesite broj telefona.");
+  return;
+}
+const phoneRegex = /^(\+385|0)\d{8,9}$/;
+
+if (!phoneRegex.test(phone.trim())) {
+  setError("Molimo unesite ispravan broj telefona.");
   return;
 }
 
 if (!pickup.trim()) {
-  alert("Molimo unesite polazište.");
+  setError("Molimo unesite polazište.");
   return;
 }
 
 if (!destination.trim()) {
-  alert("Molimo unesite odredište.");
+  setError("Molimo unesite odredište.");
   return;
 }
 
 if (!date) {
-  alert("Molimo odaberite datum.");
+  setError("Molimo odaberite datum.");
   return;
 }
 
 if (!time) {
-  alert("Molimo odaberite vrijeme.");
+  setError("Molimo odaberite vrijeme.");
   return;
 }
+setError("");
       const rideTypeLabel =
   rideType === "privatna"
     ? "Privatna vožnja"
@@ -114,6 +122,11 @@ setNote("");
         </div>
 
         <div className="mt-16 rounded-3xl border border-yellow-400/30 bg-slate-900/80 p-8 shadow-2xl backdrop-blur-xl md:p-12">
+        {error && (
+  <div className="mb-8 rounded-xl border border-red-500/50 bg-red-500/10 px-5 py-4 text-red-300">
+    {error}
+  </div>
+)}
           <div className="space-y-10">
 
             {/* BLOK 1 */}
@@ -125,19 +138,34 @@ setNote("");
 
               <div className="mt-6 grid gap-5 md:grid-cols-2">
                 <input
-  type="text"
+    type="text"
   placeholder="Ime i prezime"
   value={name}
-  onChange={(e) => setName(e.target.value)}
-  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
+  onChange={(e) => {
+    setName(e.target.value);
+    setError("");
+  }}
+  className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
+  error === "Molimo unesite ime i prezime."
+    ? "border-red-500"
+    : "border-slate-700 focus:border-yellow-400"
+} bg-slate-950/70`}
 />
 
                 <input
   type="tel"
   placeholder="Broj telefona"
   value={phone}
-  onChange={(e) => setPhone(e.target.value)}
-  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
+  onChange={(e) => {
+    setPhone(e.target.value);
+    setError("");
+  }}
+  className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
+  error === "Molimo unesite broj telefona." ||
+  error === "Molimo unesite ispravan broj telefona."
+    ? "border-red-500"
+    : "border-slate-700 focus:border-yellow-400"
+} bg-slate-950/70`}
 />
 
                 <input
@@ -163,30 +191,42 @@ setNote("");
   placeholder="Polazište"
   value={pickup}
   onChange={(e) => setPickup(e.target.value)}
-  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
-/>
+className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
+  error === "Molimo unesite polazište."
+    ? "border-red-500"
+    : "border-slate-700 focus:border-yellow-400"
+} bg-slate-950/70 md:col-span-2`}/>
 
                 <input
   type="text"
   placeholder="Odredište"
   value={destination}
   onChange={(e) => setDestination(e.target.value)}
-  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
-/>
+className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
+  error === "Molimo unesite odredište."
+    ? "border-red-500"
+    : "border-slate-700 focus:border-yellow-400"
+} bg-slate-950/70 md:col-span-2`}/>
 
                 <input
   type="date"
   value={date}
   onChange={(e) => setDate(e.target.value)}
-  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
-/>
+className={`rounded-xl border px-5 py-4 text-white outline-none transition ${
+  error === "Molimo odaberite datum."
+    ? "border-red-500"
+    : "border-slate-700 focus:border-yellow-400"
+} bg-slate-950/70`}/>
 
                 <input
   type="time"
   value={time}
   onChange={(e) => setTime(e.target.value)}
-  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
-/>
+className={`rounded-xl border px-5 py-4 text-white outline-none transition ${
+  error === "Molimo odaberite vrijeme."
+    ? "border-red-500"
+    : "border-slate-700 focus:border-yellow-400"
+} bg-slate-950/70`}/>
               </div>
             </div>
 {/* BLOK 3 */}
@@ -202,7 +242,10 @@ setNote("");
   <div className="mt-6 grid gap-5 md:grid-cols-2">
 
   <div
-  onClick={() => setRideType("privatna")}
+  onClick={() => {
+  setRideType("privatna");
+  setError("");
+}}
   className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
     rideType === "privatna"
       ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
@@ -221,7 +264,10 @@ setNote("");
   </div>
 
   <div
-  onClick={() => setRideType("aerodrom")}
+  onClick={() => {
+  setRideType("poslovna");
+  setError("");
+}}
   className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
     rideType === "aerodrom"
       ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
@@ -240,7 +286,10 @@ setNote("");
 </div>
 
   <div
-  onClick={() => setRideType("poslovna")}
+  onClick={() => {
+  setRideType("poslovna");
+  setError("");
+}}
   className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
     rideType === "poslovna"
       ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
@@ -259,7 +308,10 @@ setNote("");
 </div>
 
   <div
-  onClick={() => setRideType("vjencanje")}
+  onClick={() => {
+  setRideType("vjencanje");
+  setError("");
+}}
   className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
     rideType === "vjencanje"
       ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
