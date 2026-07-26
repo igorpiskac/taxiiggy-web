@@ -265,7 +265,7 @@ className={`rounded-xl border px-5 py-4 text-white outline-none transition ${
 
   <div
   onClick={() => {
-  setRideType("poslovna");
+  setRideType("aerodrom");
   setError("");
 }}
   className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
