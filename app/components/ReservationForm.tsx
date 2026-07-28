@@ -190,12 +190,16 @@ setNote("");
   type="text"
   placeholder="Polazište"
   value={pickup}
-  onChange={(e) => setPickup(e.target.value)}
-className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
-  error === "Molimo unesite polazište."
-    ? "border-red-500"
-    : "border-slate-700 focus:border-yellow-400"
-} bg-slate-950/70 md:col-span-2`}/>
+  onChange={(e) => {
+    setPickup(e.target.value);
+    setError("");
+  }}
+  className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
+    error === "Molimo unesite polazište."
+      ? "border-red-500"
+      : "border-slate-700 focus:border-yellow-400"
+  } bg-slate-950/70 md:col-span-2`}
+/>
 
                 <input
   type="text"
