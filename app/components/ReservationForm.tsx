@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AddressAutocomplete from "./AddressAutocomplete";
 export default function ReservationForm() {
     const [rideType, setRideType] = useState("");
     const [name, setName] = useState("");
@@ -186,14 +187,13 @@ setNote("");
               </h3>
 
               <div className="mt-6 grid gap-5 md:grid-cols-2">
-                <input
-  type="text"
-  placeholder="Polazište"
+                <AddressAutocomplete
   value={pickup}
-  onChange={(e) => {
-    setPickup(e.target.value);
+  onChange={(value) => {
+    setPickup(value);
     setError("");
   }}
+  placeholder="Polazište"
   className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
     error === "Molimo unesite polazište."
       ? "border-red-500"
@@ -201,16 +201,16 @@ setNote("");
   } bg-slate-950/70 md:col-span-2`}
 />
 
-                <input
-  type="text"
-  placeholder="Odredište"
+                <AddressAutocomplete
   value={destination}
-  onChange={(e) => setDestination(e.target.value)}
-className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
-  error === "Molimo unesite odredište."
-    ? "border-red-500"
-    : "border-slate-700 focus:border-yellow-400"
-} bg-slate-950/70 md:col-span-2`}/>
+  onChange={(value) => setDestination(value)}
+  placeholder="Odredište"
+  className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
+    error === "Molimo unesite odredište."
+      ? "border-red-500"
+      : "border-slate-700 focus:border-yellow-400"
+  } bg-slate-950/70 md:col-span-2`}
+/>
 
                 <input
   type="date"

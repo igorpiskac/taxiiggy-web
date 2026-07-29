@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useMapsLibrary } from "@vis.gl/react-google-maps";
 
 type AddressAutocompleteProps = {
   value: string;
@@ -17,13 +18,34 @@ export default function AddressAutocomplete({
 }: AddressAutocompleteProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const places = useMapsLibrary("places");
+
+  useEffect(() => {
+    if (!places || !inputRef.current) return;
+
+    const autocomplete = new places.Autocomplete(inputRef.current, {
+      fields: ["formatted_address"],
+    });
+
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+
+      if (place.formatted_address) {
+        onChange(place.formatted_address);
+      }
+    });
+
+    return () => {};
+    
+  }, [places, onChange]);
+
   return (
     <input
       ref={inputRef}
       type="text"
       value={value}
-      placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
       className={className}
       autoComplete="off"
     />
