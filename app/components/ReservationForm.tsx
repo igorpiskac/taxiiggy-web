@@ -13,6 +13,7 @@ export default function ReservationForm() {
     const [time, setTime] = useState("");
     const [note, setNote] = useState("");
     const [error, setError] = useState("");
+    const [autocompleteKey, setAutocompleteKey] = useState(0);
     const handleSubmit = () => {
       if (!rideType) {
   setError("Molimo odaberite vrstu vožnje.");
@@ -91,6 +92,7 @@ setPhone("");
 setEmail("");
 setPickup("");
 setDestination("");
+setAutocompleteKey((k) => k + 1);
 setDate("");
 setTime("");
 setNote("");
@@ -188,11 +190,14 @@ setNote("");
 
               <div className="mt-6 grid gap-5 md:grid-cols-2">
                 <AddressAutocomplete
+  key={`pickup-${autocompleteKey}`}
   value={pickup}
-  onChange={(value) => {
-    setPickup(value);
-    setError("");
-  }}
+  onChange={(data) => {
+  setPickup(data.address);
+  setError("");
+
+  console.log("Pickup:", data);
+}}
   placeholder="Polazište"
   className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
     error === "Molimo unesite polazište."
@@ -202,8 +207,13 @@ setNote("");
 />
 
                 <AddressAutocomplete
+  key={`destination-${autocompleteKey}`}
   value={destination}
-  onChange={(value) => setDestination(value)}
+  onChange={(data) => {
+  setDestination(data.address);
+
+  console.log("Destination:", data);
+}}
   placeholder="Odredište"
   className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
     error === "Molimo unesite odredište."
