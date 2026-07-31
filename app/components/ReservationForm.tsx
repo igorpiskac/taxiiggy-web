@@ -1,137 +1,248 @@
 "use client";
 
-import { useState } from "react";
-import type { AddressData } from "./AddressAutocomplete";
-import AddressAutocomplete from "./AddressAutocomplete";
+import { useState, useEffect } from "react";
+import AddressAutocomplete, { AddressData } from "./AddressAutocomplete";
+
 export default function ReservationForm() {
-    const [rideType, setRideType] = useState("");
-    const [name, setName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [pickup, setPickup] = useState("");
-const [destination, setDestination] = useState("");
-    const [pickupLocation, setPickupLocation] =
-  useState<AddressData | null>(null);
-    const [destinationLocation, setDestinationLocation] =
-  useState<AddressData | null>(null);
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
-    const [note, setNote] = useState("");
-    const [error, setError] = useState("");
-    const [autocompleteKey, setAutocompleteKey] = useState(0);
-    const handleSubmit = () => {
-      if (!rideType) {
-  setError("Molimo odaberite vrstu vožnje.");
-   return;
-  }
- 
+  const [rideType, setRideType] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
-if (!name.trim()) {
-  setError("Molimo unesite ime i prezime.");
-  return;
-}
+  const [pickup, setPickup] = useState("");
+  const [destination, setDestination] = useState("");
 
-if (!phone.trim()) {
-  setError("Molimo unesite broj telefona.");
-  return;
-}
-const phoneRegex = /^(\+385|0)\d{8,9}$/;
+  const [pickupLocation, setPickupLocation] =
+    useState<AddressData | null>(null);
 
-if (!phoneRegex.test(phone.trim())) {
-  setError("Molimo unesite ispravan broj telefona.");
-  return;
-}
+  const [destinationLocation, setDestinationLocation] =
+    useState<AddressData | null>(null);
 
-if (!pickup.trim()) {
-  setError("Molimo unesite polazište.");
-  return;
-}
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [note, setNote] = useState("");
 
-if (!destination.trim()) {
-  setError("Molimo unesite odredište.");
-  return;
-}
+  const [distanceMeters, setDistanceMeters] =
+    useState<number | null>(null);
 
-if (!date) {
-  setError("Molimo odaberite datum.");
-  return;
-}
+  const [duration, setDuration] =
+    useState<string | null>(null);
 
-if (!time) {
-  setError("Molimo odaberite vrijeme.");
-  return;
-}
-setError("");
-if (!pickupLocation || !destinationLocation) {
-  setError("Molimo odaberite polazište i odredište s Google popisa.");
-  return;
-}
+  const [loadingRoute, setLoadingRoute] = useState(false);
 
-fetch("/api/routes", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    origin: {
-      lat: pickupLocation.lat,
-      lng: pickupLocation.lng,
-    },
-    destination: {
-      lat: destinationLocation.lat,
-      lng: destinationLocation.lng,
-    },
-  }),
-})
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Routes API:", data);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-      const rideTypeLabel =
+  const [error, setError] = useState("");
+
+  const [autocompleteKey, setAutocompleteKey] = useState(0);
+
+  useEffect(() => {
+    if (!pickupLocation || !destinationLocation) {
+      setDistanceMeters(null);
+      setDuration(null);
+      return;
+    }
+
+    const loadRoute = async () => {
+      try {
+        setLoadingRoute(true);
+
+        const response = await fetch("/api/routes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            origin: {
+              lat: pickupLocation.lat,
+              lng: pickupLocation.lng,
+            },
+            destination: {
+              lat: destinationLocation.lat,
+              lng: destinationLocation.lng,
+            },
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Greška prilikom izračuna rute.");
+        }
+
+        const data = await response.json();
+
+        setDistanceMeters(data.distanceMeters);
+        setDuration(data.duration);
+      } catch (err) {
+        console.error(err);
+        setDistanceMeters(null);
+        setDuration(null);
+      } finally {
+        setLoadingRoute(false);
+      }
+    };
+
+    loadRoute();
+  }, [pickupLocation, destinationLocation]);
+
+  const handleSubmit = () => {
+    if (!rideType) {
+      setError("Molimo odaberite vrstu vožnje.");
+      return;
+    }
+
+    if (!name.trim()) {
+      setError("Molimo unesite ime i prezime.");
+      return;
+    }
+
+    if (!phone.trim()) {
+      setError("Molimo unesite broj telefona.");
+      return;
+    }
+
+    const phoneRegex = /^(\+385|0)\d{8,9}$/;
+
+    if (!phoneRegex.test(phone.trim())) {
+      setError("Molimo unesite ispravan broj telefona.");
+      return;
+    }
+
+    if (!pickupLocation) {
+      setError("Molimo odaberite polazište.");
+      return;
+    }
+
+    if (!destinationLocation) {
+      setError("Molimo odaberite odredište.");
+      return;
+    }
+
+    if (!date) {
+      setError("Molimo odaberite datum.");
+      return;
+    }
+
+    if (!time) {
+      setError("Molimo odaberite vrijeme.");
+      return;
+    }
+
+    setError("");
+    const formattedDate = new Date(date).toLocaleDateString("hr-HR");
+    const km = distanceMeters
+  ? (distanceMeters / 1000).toFixed(1)
+  : "Nije izračunato";
+
+const minutes = duration
+  ? Math.round(parseInt(duration) / 60)
+  : null;
+
+const estimatedPrice = distanceMeters
+  ? (
+      10 +
+      Math.max(0, distanceMeters / 1000 - 5) * 1.2
+    ).toFixed(2)
+  : null;
+
+const rideTypeLabel =
   rideType === "privatna"
-    ? "Privatna vožnja"
+    ? "🚖 Privatna vožnja"
     : rideType === "aerodrom"
-    ? "Aerodromski transfer"
+    ? "✈️ Aerodromski transfer"
     : rideType === "poslovna"
-    ? "Poslovna vožnja"
+    ? "💼 Poslovna vožnja"
     : rideType === "vjencanje"
-    ? "Vjenčanje"
+    ? "💍 Vjenčanje"
     : "Nije odabrano";
-      const message = `
-NOVI ZAHTJEV ZA REZERVACIJU
 
-Ime i prezime: ${name}
-Telefon: ${phone}
-E-mail: ${email || "Nije navedeno"}
+const message = `🚖 *TAXI IGGY*
 
-Polazište: ${pickup}
-Odredište: ${destination}
+📩 *Novi zahtjev za rezervaciju*
 
-Datum: ${date}
-Vrijeme: ${time}
+────────────────────
 
-Vrsta vožnje: ${rideTypeLabel}
+👤 *Kontakt*
 
-Napomena: ${note || "Nema napomene"}
-`;
-  const whatsappUrl = `https://wa.me/385915930090?text=${encodeURIComponent(message)}`;
+Ime:
+${name}
 
-window.open(whatsappUrl, "_blank");
-setRideType("");
-setName("");
-setPhone("");
-setEmail("");
-setPickup("");
-setDestination("");
-setAutocompleteKey((k) => k + 1);
-setDate("");
-setTime("");
-setNote("");
-    
-};
+Telefon:
+${phone}
+
+E-mail:
+${email || "Nije naveden"}
+
+────────────────────
+
+📍 *Vožnja*
+
+Polazište:
+${pickup}
+
+Odredište:
+${destination}
+
+📅 Datum:
+${formattedDate}
+
+🕒 Vrijeme:
+${time}
+
+────────────────────
+
+🚕 Vrsta vožnje
+
+${rideTypeLabel}
+
+────────────────────
+
+📏 Udaljenost:
+${km} km
+
+⏱️ Procijenjeno trajanje:
+${minutes ?? "-"} min
+
+💶 Procijenjena cijena:
+${estimatedPrice ? `${estimatedPrice} €` : "-"}
+
+────────────────────
+
+📝 Napomena
+
+${note || "Nema napomene"}
+
+────────────────────
+
+────────────────────
+
+✅ Hvala na vašem upitu!
+
+Javit ćemo vam se u najkraćem mogućem roku radi potvrde rezervacije.
+
+🚖 TAXI IGGY
+🌐 www.taxiiggy.com
+
+Hvala na povjerenju!`;
+
+    window.open(
+      `https://wa.me/385915930090?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+
+    setRideType("");
+    setName("");
+    setPhone("");
+    setEmail("");
+    setPickup("");
+    setDestination("");
+    setPickupLocation(null);
+    setDestinationLocation(null);
+    setDate("");
+    setTime("");
+    setNote("");
+    setDistanceMeters(null);
+    setDuration(null);
+    setAutocompleteKey((k) => k + 1);
+  };
+
   return (
     <section
       id="reservation"
@@ -153,281 +264,262 @@ setNote("");
           <div className="mx-auto mt-6 h-px w-16 bg-yellow-400" />
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-400">
-            Ispunite nekoliko osnovnih podataka,
-            a ostatak ćemo dogovoriti zajedno.
+            Ispunite nekoliko osnovnih podataka, a ostatak ćemo dogovoriti
+            zajedno.
           </p>
         </div>
 
         <div className="mt-16 rounded-3xl border border-yellow-400/30 bg-slate-900/80 p-8 shadow-2xl backdrop-blur-xl md:p-12">
-        {error && (
-  <div className="mb-8 rounded-xl border border-red-500/50 bg-red-500/10 px-5 py-4 text-red-300">
-    {error}
-  </div>
-)}
+
+          {error && (
+            <div className="mb-8 rounded-xl border border-red-500/40 bg-red-500/10 px-5 py-4 text-red-300">
+              {error}
+            </div>
+          )}
+
           <div className="space-y-10">
 
-            {/* BLOK 1 */}
-
             <div>
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold">
                 👤 Kako vas možemo kontaktirati?
               </h3>
 
               <div className="mt-6 grid gap-5 md:grid-cols-2">
-                <input
-    type="text"
-  placeholder="Ime i prezime"
-  value={name}
-  onChange={(e) => {
-    setName(e.target.value);
-    setError("");
-  }}
-  className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
-  error === "Molimo unesite ime i prezime."
-    ? "border-red-500"
-    : "border-slate-700 focus:border-yellow-400"
-} bg-slate-950/70`}
-/>
 
                 <input
-  type="tel"
-  placeholder="Broj telefona"
-  value={phone}
-  onChange={(e) => {
-    setPhone(e.target.value);
-    setError("");
-  }}
-  className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
-  error === "Molimo unesite broj telefona." ||
-  error === "Molimo unesite ispravan broj telefona."
-    ? "border-red-500"
-    : "border-slate-700 focus:border-yellow-400"
-} bg-slate-950/70`}
-/>
+                  type="text"
+                  placeholder="Ime i prezime"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setError("");
+                  }}
+                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
+                />
 
                 <input
-  type="email"
-  placeholder="E-mail (nije obavezno)"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400 md:col-span-2"
-/>
+                  type="tel"
+                  placeholder="Broj telefona"
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    setError("");
+                  }}
+                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
+                />
+
+                <input
+                  type="email"
+                  placeholder="E-mail (nije obavezno)"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400 md:col-span-2"
+                />
+
               </div>
             </div>
 
-            {/* BLOK 2 */}
-
             <div>
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold">
                 📍 Kamo putujete?
               </h3>
 
               <div className="mt-6 grid gap-5 md:grid-cols-2">
-                <AddressAutocomplete
-  key={`pickup-${autocompleteKey}`}
-  value={pickup}
- onChange={(data) => {
-  setPickup(data.address);
-  setPickupLocation(data);
-  setError("");
-
-  console.log("Pickup:", data);
-}}
-  placeholder="Polazište"
-  className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
-    error === "Molimo unesite polazište."
-      ? "border-red-500"
-      : "border-slate-700 focus:border-yellow-400"
-  } bg-slate-950/70 md:col-span-2`}
-/>
 
                 <AddressAutocomplete
-  key={`destination-${autocompleteKey}`}
-  value={destination}
-  onChange={(data) => {
-  setDestination(data.address);
-  setDestinationLocation(data);
-  setError("");
+                  key={`pickup-${autocompleteKey}`}
+                  value={pickup}
+                  placeholder="Polazište"
+                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400 md:col-span-2"
+                  onChange={(data) => {
+                    setPickup(data.address);
+                    setPickupLocation(data);
+                    setError("");
+                  }}
+                />
 
-  console.log("Destination:", data);
-}}
-  placeholder="Odredište"
-  className={`rounded-xl border px-5 py-4 text-white placeholder:text-slate-500 outline-none transition ${
-    error === "Molimo unesite odredište."
-      ? "border-red-500"
-      : "border-slate-700 focus:border-yellow-400"
-  } bg-slate-950/70 md:col-span-2`}
-/>
-
-                <input
-  type="date"
-  value={date}
-  onChange={(e) => setDate(e.target.value)}
-className={`rounded-xl border px-5 py-4 text-white outline-none transition ${
-  error === "Molimo odaberite datum."
-    ? "border-red-500"
-    : "border-slate-700 focus:border-yellow-400"
-} bg-slate-950/70`}/>
+                <AddressAutocomplete
+                  key={`destination-${autocompleteKey}`}
+                  value={destination}
+                  placeholder="Odredište"
+                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400 md:col-span-2"
+                  onChange={(data) => {
+                    setDestination(data.address);
+                    setDestinationLocation(data);
+                    setError("");
+                  }}
+                />
 
                 <input
-  type="time"
-  value={time}
-  onChange={(e) => setTime(e.target.value)}
-className={`rounded-xl border px-5 py-4 text-white outline-none transition ${
-  error === "Molimo odaberite vrijeme."
-    ? "border-red-500"
-    : "border-slate-700 focus:border-yellow-400"
-} bg-slate-950/70`}/>
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
+                />
+
+                <input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
+                />
+
+              </div>
+            </div>    
+            <div>
+              <h3 className="text-xl font-bold text-white">
+                🚕 Kakva vam je vožnja potrebna?
+              </h3>
+
+              <p className="mt-2 text-slate-400">
+                Odaberite vrstu vožnje kako bismo vam mogli pružiti najbolju
+                uslugu.
+              </p>
+
+              <div className="mt-6 grid gap-5 md:grid-cols-2">
+
+                {[
+                  {
+                    id: "privatna",
+                    icon: "🚖",
+                    title: "Privatna vožnja",
+                    text: "Vožnje po Zagrebu i okolici za svakodnevne potrebe.",
+                  },
+                  {
+                    id: "aerodrom",
+                    icon: "✈️",
+                    title: "Aerodromski transfer",
+                    text: "Dolazak ili odlazak uz dogovoreno vrijeme.",
+                  },
+                  {
+                    id: "poslovna",
+                    icon: "💼",
+                    title: "Poslovna vožnja",
+                    text: "Pouzdan prijevoz za poslovne sastanke i događanja.",
+                  },
+                  {
+                    id: "vjencanje",
+                    icon: "💍",
+                    title: "Vjenčanje",
+                    text: "Prijevoz mladenaca, uzvanika i posebnih događanja.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => {
+                      setRideType(item.id);
+                      setError("");
+                    }}
+                    className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
+                      rideType === item.id
+                        ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
+                        : "border border-slate-700 bg-slate-950/60 hover:border-yellow-400 hover:bg-slate-900"
+                    }`}
+                  >
+                    <div className="text-3xl">{item.icon}</div>
+
+                    <h4 className="mt-4 text-lg font-bold">
+                      {item.title}
+                    </h4>
+
+                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                      {item.text}
+                    </p>
+                  </div>
+                ))}
+
               </div>
             </div>
-{/* BLOK 3 */}
 
-<div>
-  <h3 className="text-xl font-bold text-white">
-    🚕 Kakva vam je vožnja potrebna?
-  </h3>
+            {rideType && (
+              <div className="rounded-xl border border-yellow-400/30 bg-yellow-400/10 p-4 text-center">
+                <p className="text-sm text-slate-300">
+                  Odabrali ste:
+                </p>
 
-  <p className="mt-2 text-slate-400">
-    Odaberite vrstu vožnje kako bismo vam mogli pružiti najbolju uslugu.
-  </p>
-  <div className="mt-6 grid gap-5 md:grid-cols-2">
+                <p className="mt-1 text-xl font-bold text-yellow-400">
+                  {rideType === "privatna" && "🚖 Privatna vožnja"}
+                  {rideType === "aerodrom" && "✈️ Aerodromski transfer"}
+                  {rideType === "poslovna" && "💼 Poslovna vožnja"}
+                  {rideType === "vjencanje" && "💍 Vjenčanje"}
+                </p>
+              </div>
+            )}
 
-  <div
-  onClick={() => {
-  setRideType("privatna");
-  setError("");
-}}
-  className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
-    rideType === "privatna"
-      ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
-      : "border border-slate-700 bg-slate-950/60 hover:border-yellow-400 hover:bg-slate-900"
-  }`}
->
-    <div className="text-3xl">🚖</div>
+            <div>
+              <h3 className="text-xl font-bold text-white">
+                📝 Dodatne informacije
+              </h3>
 
-    <h4 className="mt-4 text-lg font-bold text-white">
-      Privatna vožnja
-    </h4>
+              <textarea
+                rows={5}
+                placeholder="Npr. dječja sjedalica, broj leta, više stajanja..."
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                className="mt-6 w-full resize-none rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400"
+              />
 
-    <p className="mt-2 text-sm leading-6 text-slate-400">
-      Vožnje po Zagrebu i okolici za svakodnevne potrebe.
-    </p>
+              {loadingRoute && (
+                <div className="mt-6 rounded-xl border border-blue-500/30 bg-blue-500/10 p-4 text-center text-blue-300">
+                  Izračunavam rutu...
+                </div>
+              )}
+
+              {!loadingRoute &&
+                distanceMeters &&
+                duration && (
+                  <div className="mt-6 rounded-xl border border-yellow-400/30 bg-slate-950/50 p-5">
+
+                    <div className="flex justify-between">
+                      <span>📍 Udaljenost</span>
+                      <span>
+                        {(distanceMeters / 1000).toFixed(1)} km
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex justify-between">
+                      <span>🕒 Procijenjeno trajanje</span>
+                      <span>
+                        {Math.round(parseInt(duration) / 60)} min
+                      </span>
+                    </div>
+                <div className="mt-4 border-t border-slate-700 pt-4">
+  <div className="flex justify-between text-lg font-bold">
+    <span>💶 Procijenjena cijena</span>
+
+    <span className="text-yellow-400">
+      {(
+        10 +
+        Math.max(0, distanceMeters / 1000 - 5) * 1.2
+      ).toFixed(2)} €
+    </span>
   </div>
 
-  <div
-  onClick={() => {
-  setRideType("aerodrom");
-  setError("");
-}}
-  className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
-    rideType === "aerodrom"
-      ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
-      : "border border-slate-700 bg-slate-950/60 hover:border-yellow-400 hover:bg-slate-900"
-  }`}
->
-  <div className="text-3xl">✈️</div>
-
-  <h4 className="mt-4 text-lg font-bold text-white">
-    Aerodromski transfer
-  </h4>
-
-  <p className="mt-2 text-sm leading-6 text-slate-400">
-    Dolazak ili odlazak uz dogovoreno vrijeme.
+  <p className="mt-3 text-xs text-slate-500">
+    Informativna cijena. Konačna cijena može odstupati ovisno o čekanju,
+    usputnim stajanjima ili posebnim zahtjevima.
   </p>
-</div>
+</div>    
 
-  <div
-  onClick={() => {
-  setRideType("poslovna");
-  setError("");
-}}
-  className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
-    rideType === "poslovna"
-      ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
-      : "border border-slate-700 bg-slate-950/60 hover:border-yellow-400 hover:bg-slate-900"
-  }`}
->
-  <div className="text-3xl">💼</div>
+                  </div>
+                )}
 
-  <h4 className="mt-4 text-lg font-bold text-white">
-    Poslovna vožnja
-  </h4>
+              <button
+                type="button"
+                disabled={loadingRoute}
+                onClick={handleSubmit}
+                className="mt-8 w-full rounded-xl bg-yellow-400 px-6 py-5 text-lg font-bold text-slate-950 transition hover:-translate-y-1 hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loadingRoute
+                  ? "Izračunavam..."
+                  : "Pošaljite zahtjev za rezervaciju"}
+              </button>
 
-  <p className="mt-2 text-sm leading-6 text-slate-400">
-    Pouzdan prijevoz za poslovne sastanke i događanja.
-  </p>
-</div>
+            </div>
 
-  <div
-  onClick={() => {
-  setRideType("vjencanje");
-  setError("");
-}}
-  className={`cursor-pointer rounded-2xl p-6 transition duration-300 hover:-translate-y-1 ${
-    rideType === "vjencanje"
-      ? "border-2 border-yellow-400 bg-slate-900 shadow-lg shadow-yellow-400/20"
-      : "border border-slate-700 bg-slate-950/60 hover:border-yellow-400 hover:bg-slate-900"
-  }`}
->
-  <div className="text-3xl">💍</div>
-
-  <h4 className="mt-4 text-lg font-bold text-white">
-    Vjenčanje
-  </h4>
-
-  <p className="mt-2 text-sm leading-6 text-slate-400">
-    Prijevoz mladenaca, uzvanika i posebnih događanja.
-  </p>
-</div>
-
-</div>
-</div>
-
-{rideType && (
-  <div className="mt-6 rounded-xl border border-yellow-400/30 bg-yellow-400/10 p-4 text-center">
-    <p className="text-sm text-slate-300">
-      Odabrali ste:
-    </p>
-
-    <p className="mt-1 text-xl font-bold text-yellow-400">
-  {rideType === "privatna" && "🚖 Privatna vožnja"}
-  {rideType === "aerodrom" && "✈️ Aerodromski transfer"}
-  {rideType === "poslovna" && "💼 Poslovna vožnja"}
-  {rideType === "vjencanje" && "💍 Vjenčanje"}
-</p>
-  </div>
-)}
-{/* BLOK 4 */}
-
-<div>
-  <h3 className="text-xl font-bold text-white">
-    📝 Dodatne informacije
-  </h3>
-
-  <p className="mt-2 text-slate-400">
-    Imate li posebnu napomenu ili zahtjev vezan uz vožnju?
-  </p>
-
-  <textarea
-  rows={5}
-  placeholder="Npr. dječja sjedalica, više stajanja, broj leta..."
-  value={note}
-  onChange={(e) => setNote(e.target.value)}
-  className="mt-6 w-full resize-none rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white placeholder:text-slate-500 outline-none transition focus:border-yellow-400"
-/>
-</div>
-<button
-  type="button"
-  onClick={handleSubmit}
-  className="w-full rounded-xl bg-yellow-400 px-6 py-5 text-lg font-bold text-slate-950 transition duration-300 hover:-translate-y-1 hover:bg-yellow-300 hover:shadow-xl hover:shadow-yellow-400/20"
->
-  Pošaljite zahtjev za rezervaciju
-</button>
-
-</div>
-</div>
           </div>
-
+        </div>
+      </div>
     </section>
   );
-}
+}            

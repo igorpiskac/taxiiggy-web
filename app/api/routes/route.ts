@@ -67,11 +67,16 @@ destination: {
 
 const data = await response.json();
 
-console.log("HTTP status:", response.status);
-console.log("HTTP ok:", response.ok);
-console.log(JSON.stringify(data, null, 2));
+if (!response.ok) {
+  return NextResponse.json(data, { status: response.status });
+}
 
-return NextResponse.json(data);
+const route = data.routes?.[0];
+
+return NextResponse.json({
+  distanceMeters: route.distanceMeters,
+  duration: route.duration,
+});
   } catch (error) {
     console.error(error);
 
