@@ -82,7 +82,7 @@ export default function ReservationForm() {
     loadRoute();
   }, [pickupLocation, destinationLocation]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!rideType) {
       setError("Molimo odaberite vrstu vožnje.");
       return;
@@ -221,7 +221,26 @@ Javit ćemo vam se u najkraćem mogućem roku radi potvrde rezervacije.
 🌐 www.taxiiggy.com
 
 Hvala na povjerenju!`;
-
+    await fetch("/api/reservation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        email,
+        pickup,
+        destination,
+        date: formattedDate,
+        time,
+        rideType: rideTypeLabel,
+        distance: `${km} km`,
+        duration: `${minutes ?? "-"} min`,
+        price: estimatedPrice ? `${estimatedPrice} €` : "-",
+        note,
+      }),
+    });
     window.open(
       `https://wa.me/385915930090?text=${encodeURIComponent(message)}`,
       "_blank"
