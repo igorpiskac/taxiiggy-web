@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { AddressData } from "./AddressAutocomplete";
 import AddressAutocomplete from "./AddressAutocomplete";
 export default function ReservationForm() {
     const [rideType, setRideType] = useState("");
@@ -8,7 +9,11 @@ export default function ReservationForm() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [pickup, setPickup] = useState("");
-    const [destination, setDestination] = useState("");
+const [destination, setDestination] = useState("");
+    const [pickupLocation, setPickupLocation] =
+  useState<AddressData | null>(null);
+    const [destinationLocation, setDestinationLocation] =
+  useState<AddressData | null>(null);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [note, setNote] = useState("");
@@ -17,8 +22,9 @@ export default function ReservationForm() {
     const handleSubmit = () => {
       if (!rideType) {
   setError("Molimo odaberite vrstu vožnje.");
-  return;
-}
+   return;
+  }
+ 
 
 if (!name.trim()) {
   setError("Molimo unesite ime i prezime.");
@@ -56,6 +62,34 @@ if (!time) {
   return;
 }
 setError("");
+if (!pickupLocation || !destinationLocation) {
+  setError("Molimo odaberite polazište i odredište s Google popisa.");
+  return;
+}
+
+fetch("/api/routes", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    origin: {
+      lat: pickupLocation.lat,
+      lng: pickupLocation.lng,
+    },
+    destination: {
+      lat: destinationLocation.lat,
+      lng: destinationLocation.lng,
+    },
+  }),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Routes API:", data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
       const rideTypeLabel =
   rideType === "privatna"
     ? "Privatna vožnja"
@@ -192,8 +226,9 @@ setNote("");
                 <AddressAutocomplete
   key={`pickup-${autocompleteKey}`}
   value={pickup}
-  onChange={(data) => {
+ onChange={(data) => {
   setPickup(data.address);
+  setPickupLocation(data);
   setError("");
 
   console.log("Pickup:", data);
@@ -211,6 +246,8 @@ setNote("");
   value={destination}
   onChange={(data) => {
   setDestination(data.address);
+  setDestinationLocation(data);
+  setError("");
 
   console.log("Destination:", data);
 }}
