@@ -1,4 +1,16 @@
-type ReservationEmailProps = {
+import {
+  Body,
+  Container,
+  Head,
+  Heading,
+  Hr,
+  Html,
+  Preview,
+  Section,
+  Text,
+} from "@react-email/components";
+import InfoRow from "./components/InfoRow";
+type Props = {
   name: string;
   phone: string;
   email: string;
@@ -12,34 +24,8 @@ type ReservationEmailProps = {
   price: string;
   note: string;
 };
-function infoRow(label: string, value: string) {
-  return `
-    <tr>
-      <td
-        style="
-          width:180px;
-          padding:12px 16px;
-          font-weight:bold;
-          color:#475569;
-          border-bottom:1px solid #e2e8f0;
-        "
-      >
-        ${label}
-      </td>
 
-      <td
-        style="
-          padding:12px 16px;
-          color:#0f172a;
-          border-bottom:1px solid #e2e8f0;
-        "
-      >
-        ${value}
-      </td>
-    </tr>
-  `;
-}
-export function ReservationEmail({
+export default function ReservationEmail({
   name,
   phone,
   email,
@@ -52,134 +38,111 @@ export function ReservationEmail({
   duration,
   price,
   note,
-}: ReservationEmailProps) {
-  return `
-<!DOCTYPE html>
-<html lang="hr">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>TAXI IGGY</title>
-</head>
+}: Props) {
+  return (
+    <Html lang="hr">
+      <Head />
 
-<body
-  style="
-    margin:0;
-    padding:40px;
-    background:#f8fafc;
-    font-family:Arial, Helvetica, sans-serif;
-  "
+      <Preview>Nova rezervacija - TAXI IGGY</Preview>
+
+      <Body
+        style={{
+          backgroundColor: "#f8fafc",
+          fontFamily: "Arial, sans-serif",
+          padding: "40px",
+        }}
+      >
+        <Container
+          style={{
+            backgroundColor: "#ffffff",
+            borderRadius: "16px",
+            padding: "40px",
+          }}
+        >
+          <Section>
+            <Heading
+              style={{
+                color: "#0f172a",
+                textAlign: "center",
+              }}
+            >
+              🚖 TAXI IGGY
+            </Heading>
+
+            <Heading
+              as="h2"
+              style={{
+                textAlign: "center",
+              }}
+            >
+              Nova rezervacija
+            </Heading>
+
+            <Hr
+  style={{
+    borderColor: "#e2e8f0",
+    margin: "32px 0",
+  }}
+/>
+
+<Text
+  style={{
+    fontSize: "16px",
+    color: "#334155",
+    lineHeight: "26px",
+    margin: 0,
+  }}
 >
+  Zaprimljen je novi zahtjev za rezervaciju putem web stranice.
+</Text>
 
-<table
-  width="100%"
-  cellpadding="0"
-  cellspacing="0"
-  role="presentation"
+<Text
+  style={{
+    fontSize: "16px",
+    color: "#334155",
+    lineHeight: "26px",
+    marginTop: "12px",
+  }}
 >
+  Rezervaciju je poslao: <strong>{name}</strong>
+</Text>
+<Hr
+  style={{
+    borderColor: "#e2e8f0",
+    margin: "32px 0",
+  }}
+/>
 
-<tr>
-
-<td align="center">
-
-<table
-  width="600"
-  cellpadding="0"
-  cellspacing="0"
-  style="
-    background:#ffffff;
-    border-radius:16px;
-    overflow:hidden;
-  "
+<Heading
+  as="h3"
+  style={{
+    fontSize: "20px",
+    color: "#0f172a",
+    marginBottom: "20px",
+  }}
 >
+  Kontakt
+</Heading>
 
-<tr>
+<Section>
+  <InfoRow
+    label="Ime i prezime"
+    value={name}
+  />
 
-<td
-  style="
-    background:#0f172a;
-    color:white;
-    text-align:center;
-    padding:40px;
-  "
->
+  <InfoRow
+  label="Telefon"
+  value={phone}
+/>
 
-<h1
-  style="
-    margin:0;
-    color:#facc15;
-    font-size:34px;
-  "
->
-🚖 TAXI IGGY
-</h1>
-
-<p
-  style="
-    margin-top:12px;
-    font-size:18px;
-  "
->
-Nova rezervacija
-</p>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="padding:40px;">
-
-<h2 style="
-margin:0 0 25px;
-font-size:22px;
-color:#0f172a;
-">
-👤 Kontakt
-</h2>
-
-<table width="100%" cellpadding="10" cellspacing="0">
-
-<tr>
-<td style="width:180px;font-weight:bold;color:#475569;">
-Ime i prezime
-</td>
-
-<td>
-${name}
-</td>
-</tr>
-
-<table
-  width="100%"
-  cellpadding="0"
-  cellspacing="0"
-  role="presentation"
->
-
-${infoRow("Ime i prezime", name)}
-
-${infoRow("Telefon", phone)}
-
-${infoRow("E-mail", email || "-")}
-
-</table>
-
-</td>
-
-</tr>
-
-</table>
-
-</td>
-
-</tr>
-
-</table>
-
-</body>
-
-</html>
-`;
+<InfoRow
+  label="E-mail"
+  value={email || "-"}
+/>
+</Section>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  );
 }

@@ -1,5 +1,7 @@
+import { render } from "@react-email/render";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import ReservationEmail from "@/app/emails/ReservationEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -27,45 +29,20 @@ export async function POST(request: Request) {
       to: ["iggy.zgb@gmail.com"],
       subject: "🚖 Nova TAXI IGGY rezervacija",
 
-      text: `
-NOVA REZERVACIJA
-
-Ime:
-${name}
-
-Telefon:
-${phone}
-
-E-mail:
-${email || "Nije navedeno"}
-
-Polazište:
-${pickup}
-
-Odredište:
-${destination}
-
-Datum:
-${date}
-
-Vrijeme:
-${time}
-
-Vrsta vožnje:
-${rideType}
-
-Udaljenost:
-${distance}
-
-Trajanje:
-${duration}
-
-Procijenjena cijena:
-${price}
-
-Napomena:
-${note || "Nema napomene"}
-`,
+      react: ReservationEmail({
+  name,
+  phone,
+  email: email || "",
+  pickup,
+  destination,
+  date,
+  time,
+  rideType,
+  distance,
+  duration,
+  price,
+  note: note || "",
+}),
     });
 
     return NextResponse.json({
