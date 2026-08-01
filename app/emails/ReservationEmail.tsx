@@ -9,7 +9,10 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+
+
 import InfoRow from "./components/InfoRow";
+import SectionTitle from "./components/SectionTitle";
 type Props = {
   name: string;
   phone: string;
@@ -113,16 +116,9 @@ export default function ReservationEmail({
   }}
 />
 
-<Heading
-  as="h3"
-  style={{
-    fontSize: "20px",
-    color: "#0f172a",
-    marginBottom: "20px",
-  }}
->
-  Kontakt
-</Heading>
+<SectionTitle>
+  👤 KONTAKT
+</SectionTitle>
 
 <Section>
   <InfoRow
@@ -131,16 +127,41 @@ export default function ReservationEmail({
   />
 
   <InfoRow
-  label="Telefon"
-  value={phone}
+    label="Telefon"
+    value={phone}
+  />
+
+  <InfoRow
+    label="E-mail"
+    value={email || "-"}
+  />
+</Section>
+
+<Hr
+  style={{
+    borderColor: "#e2e8f0",
+    margin: "32px 0",
+  }}
 />
 
-<InfoRow
-  label="E-mail"
-  value={email || "-"}
-/>
-</Section>
-          </Section>
+<Section>
+  <SectionTitle>
+    📍 RUTA
+  </SectionTitle>
+
+  <InfoRow
+    label="Polazište"
+    value={pickup}
+  />
+
+  <InfoRow
+    label="Odredište"
+    value={destination}
+  />
+</Section>   
+
+  </Section>   
+
         </Container>
       </Body>
     </Html>
