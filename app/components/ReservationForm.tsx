@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddressAutocomplete, { AddressData } from "./AddressAutocomplete";
+import SuccessModal from "./SuccessModal";
 
 export default function ReservationForm() {
   const [rideType, setRideType] = useState("");
@@ -33,7 +34,10 @@ export default function ReservationForm() {
   const [error, setError] = useState("");
 
   const [autocompleteKey, setAutocompleteKey] = useState(0);
-
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  useEffect(() => {
+  console.log("showSuccessModal:", showSuccessModal);
+}, [showSuccessModal]);
   useEffect(() => {
     if (!pickupLocation || !destinationLocation) {
       setDistanceMeters(null);
@@ -241,25 +245,34 @@ Hvala na povjerenju!`;
         note,
       }),
     });
-    window.open(
-      `https://wa.me/385915930090?text=${encodeURIComponent(message)}`,
-      "_blank"
-    );
+    setShowSuccessModal(true);
 
-    setRideType("");
-    setName("");
-    setPhone("");
-    setEmail("");
-    setPickup("");
-    setDestination("");
-    setPickupLocation(null);
-    setDestinationLocation(null);
-    setDate("");
-    setTime("");
-    setNote("");
-    setDistanceMeters(null);
-    setDuration(null);
-    setAutocompleteKey((k) => k + 1);
+setTimeout(() => {
+  window.open(
+    `https://wa.me/385915930090?text=${encodeURIComponent(message)}`,
+    "_blank"
+  );
+
+  setShowSuccessModal(false);
+
+  setRideType("");
+  setName("");
+  setPhone("");
+  setEmail("");
+  setPickup("");
+  setDestination("");
+  setPickupLocation(null);
+  setDestinationLocation(null);
+  setDate("");
+  setTime("");
+  setNote("");
+  setDistanceMeters(null);
+  setDuration(null);
+  setAutocompleteKey((k) => k + 1);
+}, 3000);
+
+return;
+    
   };
 
   return (
@@ -539,6 +552,7 @@ Hvala na povjerenju!`;
           </div>
         </div>
       </div>
+<SuccessModal open={showSuccessModal} />     
     </section>
   );
 }            
