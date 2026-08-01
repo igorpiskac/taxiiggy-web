@@ -35,6 +35,9 @@ export default function ReservationForm() {
 
   const [autocompleteKey, setAutocompleteKey] = useState(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [modalStatus, setModalStatus] = useState<
+  "sending" | "opening" | "ready"
+>("sending");
   useEffect(() => {
   console.log("showSuccessModal:", showSuccessModal);
 }, [showSuccessModal]);
@@ -246,6 +249,14 @@ Hvala na povjerenju!`;
       }),
     });
     setShowSuccessModal(true);
+    setModalStatus("sending");
+    setTimeout(() => {
+  setModalStatus("opening");
+}, 1500);
+
+setTimeout(() => {
+  setModalStatus("ready");
+}, 2700);
 
 setTimeout(() => {
   window.open(
@@ -552,7 +563,10 @@ return;
           </div>
         </div>
       </div>
-<SuccessModal open={showSuccessModal} />     
+<SuccessModal
+  open={showSuccessModal}
+  status={modalStatus}
+/>    
     </section>
   );
 }            

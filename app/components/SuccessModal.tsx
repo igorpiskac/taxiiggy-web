@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
+type ModalStatus = "sending" | "opening" | "ready";
+
 type Props = {
   open: boolean;
+  status: ModalStatus;
 };
 
-export default function SuccessModal({ open }: Props) {
+export default function SuccessModal({ open, status }: Props) {
   if (!open) return null;
 
   return (
@@ -44,12 +47,15 @@ export default function SuccessModal({ open }: Props) {
         </h2>
 
         <p className="mt-5 leading-8 text-slate-300">
-          Vaša rezervacija uspješno je poslana.
-        </p>
+  {status === "sending" &&
+    "📧 Rezervacija je uspješno zaprimljena."}
 
-        <p className="mt-2 leading-8 text-slate-300">
-          Za nekoliko trenutaka otvorit će se WhatsApp radi brže komunikacije.
-        </p>
+  {status === "opening" &&
+    "📱 Otvaramo WhatsApp..."}
+
+  {status === "ready" &&
+    "✅ WhatsApp je spreman."}
+</p>
 
         <div className="mt-8">
 
