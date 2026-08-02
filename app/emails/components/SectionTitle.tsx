@@ -9,10 +9,10 @@ export default function SectionTitle({ children }: Props) {
     <Heading
       as="h3"
       style={{
-        fontSize: "22px",
+        fontSize: "18px",
         color: "#0f172a",
-        marginTop: "32px",
-        marginBottom: "18px",
+        marginTop: "20px",
+        marginBottom: "12px",
       }}
     >
       {children}

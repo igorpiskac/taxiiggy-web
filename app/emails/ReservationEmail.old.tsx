@@ -10,9 +10,9 @@ import {
   Text,
 } from "@react-email/components";
 
+
 import InfoRow from "./components/InfoRow";
 import SectionTitle from "./components/SectionTitle";
-
 type Props = {
   name: string;
   phone: string;
@@ -46,7 +46,7 @@ export default function ReservationEmail({
     <Html lang="hr">
       <Head />
 
-      <Preview>Nova TAXI IGGY rezervacija</Preview>
+      <Preview>Nova rezervacija - TAXI IGGY</Preview>
 
       <Body
         style={{
@@ -60,42 +60,48 @@ export default function ReservationEmail({
             backgroundColor: "#ffffff",
             borderRadius: "16px",
             padding: "32px",
-            maxWidth: "560px",
+             maxWidth: "560px",
           }}
         >
-          <Heading
-            style={{
-              textAlign: "center",
-              color: "#0f172a",
-              marginBottom: "8px",
-            }}
-          >
-            🚖 TAXI IGGY
-          </Heading>
-
-          <Heading
-            as="h2"
-            style={{
-              textAlign: "center",
-              color: "#0f172a",
-              fontSize: "28px",
-              marginTop: "0",
-            }}
-          >
-            Nova rezervacija
-          </Heading>
-
-          <Hr
-            style={{
-              borderColor: "#e2e8f0",
-              margin: "24px 0",
-            }}
-          />
           <Section>
-  <SectionTitle>
-    👤 KONTAKT
-  </SectionTitle>
+            <Heading
+              style={{
+                color: "#0f172a",
+                textAlign: "center",
+              }}
+            >
+              🚖 TAXI IGGY
+            </Heading>
 
+            <Heading
+              as="h2"
+              style={{
+                textAlign: "center",
+              }}
+            >
+              Nova rezervacija
+            </Heading>
+
+            <Hr
+  style={{
+    borderColor: "#e2e8f0",
+    margin: "32px 0",
+  }}
+/>
+
+
+<Hr
+  style={{
+    borderColor: "#e2e8f0",
+    margin: "32px 0",
+  }}
+/>
+
+<SectionTitle>
+  👤 KONTAKT
+</SectionTitle>
+
+<Section>
   <InfoRow
     label="Ime i prezime"
     value={name}
@@ -111,10 +117,11 @@ export default function ReservationEmail({
     value={email || "-"}
   />
 </Section>
+
 <Hr
   style={{
     borderColor: "#e2e8f0",
-    margin: "24px 0",
+    margin: "32px 0",
   }}
 />
 
@@ -132,12 +139,11 @@ export default function ReservationEmail({
     label="Odredište"
     value={destination}
   />
-</Section>
-
+</Section>   
 <Hr
   style={{
     borderColor: "#e2e8f0",
-    margin: "24px 0",
+    margin: "32px 0",
   }}
 />
 
@@ -164,13 +170,13 @@ export default function ReservationEmail({
 <Hr
   style={{
     borderColor: "#e2e8f0",
-    margin: "24px 0",
+    margin: "32px 0",
   }}
 />
 
 <Section>
   <SectionTitle>
-    💶 PROCJENA CIJENE
+    💶 PROCJENA
   </SectionTitle>
 
   <InfoRow
@@ -191,26 +197,27 @@ export default function ReservationEmail({
 <Hr
   style={{
     borderColor: "#e2e8f0",
-    margin: "24px 0",
+    margin: "32px 0",
   }}
 />
 
 <Section>
   <SectionTitle>
-    📝 DODATNA NAPOMENA
+    📝 NAPOMENA
   </SectionTitle>
 
   <Text
     style={{
-      fontSize: "14px",
-      lineHeight: "22px",
+      fontSize: "15px",
+      lineHeight: "26px",
       color: "#334155",
       margin: 0,
     }}
   >
-    {note || "Nema dodatne napomene."}
+    {note || "Nema napomene."}
   </Text>
 </Section>
+  </Section>   
 
         </Container>
       </Body>

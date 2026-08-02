@@ -8,12 +8,13 @@ type Props = {
 export default function InfoRow({ label, value }: Props) {
   return (
     <Row>
-      <Column style={{ width: "180px" }}>
+      <Column style={{ width: "150px" }}>
         <Text
           style={{
             fontWeight: "bold",
             color: "#64748b",
-            margin: "8px 0",
+            fontSize: "14px",
+            margin: "5px 0",
           }}
         >
           {label}
@@ -24,7 +25,8 @@ export default function InfoRow({ label, value }: Props) {
         <Text
           style={{
             color: "#0f172a",
-            margin: "8px 0",
+            fontSize: "14px",
+            margin: "5px 0",
           }}
         >
           {value}
