@@ -68,6 +68,9 @@ destination: {
 const data = await response.json();
 
 if (!response.ok) {
+  console.log("Google Routes API error:");
+  console.log(JSON.stringify(data, null, 2));
+
   return NextResponse.json(data, { status: response.status });
 }
 
