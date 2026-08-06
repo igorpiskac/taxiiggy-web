@@ -88,6 +88,16 @@ export default function ReservationForm() {
 
     loadRoute();
   }, [pickupLocation, destinationLocation]);
+  const START_FARE = 1.6;
+const PRICE_PER_KM = 1.3;
+const MINIMUM_FARE = 6;
+
+const estimatedPrice = distanceMeters
+  ? Math.max(
+      MINIMUM_FARE,
+      START_FARE + (distanceMeters / 1000) * PRICE_PER_KM
+    ).toFixed(2)
+  : null;
 
   const handleSubmit = async () => {
     if (!rideType) {
@@ -143,9 +153,9 @@ const minutes = duration
   : null;
 
 const estimatedPrice = distanceMeters
-  ? (
-      10 +
-      Math.max(0, distanceMeters / 1000 - 5) * 1.2
+  ? Math.max(
+      MINIMUM_FARE,
+      START_FARE + (distanceMeters / 1000) * PRICE_PER_KM
     ).toFixed(2)
   : null;
 
@@ -531,11 +541,8 @@ return;
     <span>💶 Procijenjena cijena</span>
 
     <span className="text-yellow-400">
-      {(
-        10 +
-        Math.max(0, distanceMeters / 1000 - 5) * 1.2
-      ).toFixed(2)} €
-    </span>
+  {estimatedPrice} €
+</span>
   </div>
 
   <p className="mt-3 text-xs text-slate-500">
