@@ -105,3 +105,14 @@ body {
 .animate-pop {
   animation: popIn 0.35s ease-out;
 }
+/* Zadrži tamnu temu kada preglednik automatski popuni polja */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: white !important;
+  -webkit-box-shadow: 0 0 0px 1000px #0b1020 inset !important;
+  box-shadow: 0 0 0px 1000px #0b1020 inset !important;
+  caret-color: white;
+}

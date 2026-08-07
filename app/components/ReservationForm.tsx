@@ -38,6 +38,15 @@ export default function ReservationForm() {
   const [modalStatus, setModalStatus] = useState<
   "sending" | "opening" | "ready"
 >("sending");
+useEffect(() => {
+  const savedName = localStorage.getItem("taxiiggy_name");
+  const savedPhone = localStorage.getItem("taxiiggy_phone");
+  const savedEmail = localStorage.getItem("taxiiggy_email");
+
+  if (savedName) setName(savedName);
+  if (savedPhone) setPhone(savedPhone);
+  if (savedEmail) setEmail(savedEmail);
+}, []);
   useEffect(() => {
   console.log("showSuccessModal:", showSuccessModal);
 }, [showSuccessModal]);
@@ -235,9 +244,12 @@ ${note || "Nema napomene"}
 Javit ćemo vam se u najkraćem mogućem roku radi potvrde rezervacije.
 
 🚖 TAXI IGGY
-🌐 www.taxiiggy.com
+🌐 www.taxiiggy.hr
 
 Hvala na povjerenju!`;
+localStorage.setItem("taxiiggy_name", name);
+localStorage.setItem("taxiiggy_phone", phone);
+localStorage.setItem("taxiiggy_email", email);
     await fetch("/api/reservation", {
       method: "POST",
       headers: {
@@ -341,6 +353,7 @@ return;
 
                 <input
                   type="text"
+                  autoComplete="name"
                   placeholder="Ime i prezime"
                   value={name}
                   onChange={(e) => {
@@ -352,8 +365,11 @@ return;
 
                 <input
                   type="tel"
+                  autoComplete="tel"
+                  inputMode="tel"
                   placeholder="Broj telefona"
                   value={phone}
+                  
                   onChange={(e) => {
                     setPhone(e.target.value);
                     setError("");
@@ -363,7 +379,8 @@ return;
 
                 <input
                   type="email"
-                  placeholder="E-mail (nije obavezno)"
+                  autoComplete="email"
+                  placeholder="E-mail (opcionalno)"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="rounded-xl border border-slate-700 bg-slate-950/70 px-5 py-4 text-white outline-none transition focus:border-yellow-400 md:col-span-2"
